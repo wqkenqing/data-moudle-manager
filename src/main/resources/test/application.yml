@@ -1,0 +1,63 @@
+server:
+  port: ${SERVER_PORT:8100}
+
+spring:
+  application:
+    name: data-persist
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_ADDRESS:116.196.81.123:3307}/mybaits?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=CTT
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:test123}
+  data:
+    elasticsearch:
+      #集群名称
+      cluster-name: ${ES_CLUSTER_NAME:docker-cluster}
+      #连接地址
+      cluster-nodes: ${ES_CLUSTER_NODES:jd_cloud:9300}
+  elasticsearch:
+      rest:
+        uris: ${ES_HEALTH_ADDRESS:http://jd_cloud:9200}
+  mail:
+    host: smtp.sina.com #发送邮件服务器
+    username: kuiqwang@sina.com #发送邮件的邮箱地址
+    password: 74120020f1207ea0 #客户端授权码，不是邮箱密码,网易的是自己设置的
+    from: kuiqwang@sina.com # 发送邮件的地址，和上面username一致
+    properties.mail.smtp.port: 465 #465或者994
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
+
+  kafka:
+    bootstrap-servers: ${KAFKA_ADDRESS:116.196.81.123:32772}
+    consumer:
+      enable-auto-commit: true
+      group-id: ${KAFKA_GROUP_ID:consumer-1}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+# 配置slq打印日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+monitor:
+  minuteTopics: monitor_config/topics/10minute_topics
+  hourTopics: monitor_config/topics/8hour_topics
+  dayTopics: monitor_config/topics/1day_topics
+  monthTopics: monitor_config/topics/1month_topics
+  props:  monitor_config/kafka.props
+  outpath: /Users/wqkenqing/Desktop/out
+  thresholdNum: 4
+schedule:
+  minute: 0 0/10 * * * ?
+  hour: 0 0 0/8 * * ?
+  day: 0 0 0 0/1 * ?
+  month: 0 0 1 1 * ?
+
+
+kafka:
+  topic:
+    partition:1
